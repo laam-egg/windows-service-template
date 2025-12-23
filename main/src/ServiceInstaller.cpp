@@ -190,9 +190,16 @@ bool UninstallServiceAndWait(LPCWSTR serviceName)
     CloseServiceHandle(scm);
 
     // Wait until SCM fully removes it
+    int retriesLeft = 5;
     for (;;)
     {
-        DebugLog("Waiting for service to be fully removed by SCM...");
+        --retriesLeft;
+        if (retriesLeft < 0) {
+            DebugLog("Service might not be fully removed by SCM. Exiting anyway.");
+            return true;
+        }
+
+        DebugLog("Waiting for service to be fully removed by SCM (retries left: ", retriesLeft, L")...");
         scm = OpenSCManager(nullptr, nullptr, SC_MANAGER_CONNECT);
         svc = OpenService(scm, serviceName, SERVICE_QUERY_STATUS);
 
@@ -206,7 +213,7 @@ bool UninstallServiceAndWait(LPCWSTR serviceName)
             CloseServiceHandle(svc);
 
         CloseServiceHandle(scm);
-        Sleep(500);
+        Sleep(1000);
     }
 
     return true;

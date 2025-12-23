@@ -1,30 +1,8 @@
 #include "stdafx.h"
 #include "ServiceInstaller.h"
 #include "ServiceBase.h"
+#include "WindowsService.h"
 #include "WindowsServiceImpl.h"
-
-// Internal name of the service
-#define SERVICE_NAME             L"pmd-service"
-
-// Displayed name of the service
-#define SERVICE_DISPLAY_NAME     L"PE Malware Detection Service"
-
-// Service start options.
-#define SERVICE_START_TYPE       SERVICE_AUTO_START
-
-// Start the service right after installation or not?
-#define SERVICE_START_IMMEDIATELY  TRUE
-
-// List of service dependencies - "dep1\0dep2\0\0"
-#define SERVICE_DEPENDENCIES     L""
-
-// The name of the account under which the service should run
-#define SERVICE_ACCOUNT          NULL // LocalSystem
-
-// The password to the service account name
-#define SERVICE_PASSWORD         NULL
-
-
 
 int wmain(int argc, wchar_t *argv[])
 {
