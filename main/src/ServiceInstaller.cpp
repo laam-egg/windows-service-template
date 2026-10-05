@@ -25,6 +25,8 @@ void InstallOrReplaceService(
     // 2. Get binary path
     wchar_t path[MAX_PATH];
     GetModuleFileName(nullptr, path, MAX_PATH);
+    // 2b. Get safe service binary path
+    std::wstring safeServiceBinaryPath = std::wstring{ L"\"" } + path + L"\"";
 
     // 3. Create service
     SC_HANDLE scm = OpenSCManager(nullptr, nullptr, SC_MANAGER_ALL_ACCESS);
@@ -41,7 +43,7 @@ void InstallOrReplaceService(
         SERVICE_WIN32_OWN_PROCESS,      // Service type
         dwStartType,                    // Service start type
         SERVICE_ERROR_NORMAL,           // Error control type
-        path,                           // Service's binary
+        safeServiceBinaryPath.c_str(),  // Service's binary
         NULL,                           // No load ordering group
         NULL,                           // No tag identifier
         pszDependencies,                // Dependencies
